@@ -22,3 +22,14 @@ map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = true })
 -- center page when C-d/C-u
 map("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 map("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
+
+-- Comments
+-- <C-_> is Ctrl + /
+map("n", "<C-_>", "gcc", { remap = true })
+map("v", "<C-_>", "gc", { remap = true })
+map("i", "<C-_>", function()
+  local curr_win = vim.api.nvim_get_current_win()
+  local cursor_pos = vim.api.nvim_win_get_cursor(curr_win)
+  local line = cursor_pos[1]
+  require("mini.comment").toggle_lines(line, line)
+end, { remap = true })
