@@ -13,6 +13,7 @@ map({ "n", "v" }, "<leader>y", [["+y]], { desc = "clipboard yank" })
 
 -- allow for Ctrl + Backspace for deleting words
 map("i", "<C-h>", "<C-w>", { noremap = true, silent = true }) -- Can't bind <C-BS> directly, this is the work around
+map("i", "<C-BS>", "<C-w>", { noremap = true, silent = true }) -- Ghostty kitty protocol sends <C-BS>
 
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>_", "<C-W>s", { desc = "Split Window Below", remap = true })
