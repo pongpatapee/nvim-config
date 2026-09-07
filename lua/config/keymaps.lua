@@ -34,3 +34,36 @@ map("i", "<C-_>", function()
   local line = cursor_pos[1]
   require("mini.comment").toggle_lines(line, line)
 end, { remap = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    -- Normal mode: Delete single item
+    vim.keymap.set("n", "dd", function()
+      local qf_list = vim.fn.getqflist()
+      local idx = vim.fn.line(".")
+      table.remove(qf_list, idx)
+      vim.fn.setqflist(qf_list, "r")
+      vim.fn.cursor(math.min(idx, #qf_list), 1)
+    end, { buffer = true, desc = "Delete item from quickfix list" })
+
+    -- Visual mode: Delete highlighted items
+    vim.keymap.set("v", "d", function()
+      local qf_list = vim.fn.getqflist()
+      local first_line = vim.fn.line("v")
+      local last_line = vim.fn.line(".")
+
+      -- Ensure correct order if highlighted bottom-to-top
+      local start_idx = math.min(first_line, last_line)
+      local end_idx = math.max(first_line, last_line)
+
+      -- Remove items backwards to keep indexes intact
+      for i = end_idx, start_idx, -1 do
+        table.remove(qf_list, i)
+      end
+
+      vim.fn.setqflist(qf_list, "r")
+      vim.fn.cursor(math.min(start_idx, #qf_list), 1)
+    end, { buffer = true, desc = "Delete selected items from quickfix list" })
+  end,
+})
