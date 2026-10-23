@@ -9,6 +9,11 @@ return {
     -- refer to the configuration section below
     picker = {
       hidden = true,
+      sources = {
+        explorer = {
+          ignored = true, -- always show git ignored files
+        },
+      },
     },
   },
 }
